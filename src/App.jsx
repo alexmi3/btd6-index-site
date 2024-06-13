@@ -1,54 +1,50 @@
 import './App.css';
-import HomePage from './routes/HomePage';
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-  useNavigate
-} from "react-router-dom";
-import TwoTC from './routes/challenges/TwoTC';
-import TwoMPC from './routes/challenges/TwoMPC';
-import { AddTwoTC, EditTwoTC } from './routes/challenges/manip/ManipTwoTC';
-import NotFound from './routes/NotFound';
-import { AddTwoMP, EditTwoMP } from './routes/challenges/manip/ManipTwoMP';
-import TwoTCExtraInfo from './routes/challenges/info/TwoTCExtraInfo';
-import TwoMPExtraInfo from './routes/challenges/info/TwoMPExtraInfo';
+import { createBrowserRouter, Outlet, RouterProvider, useNavigate } from "react-router-dom";
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
-import TwoMPNotes from './routes/challenges/notes/TwoMPNotes';
-import TwoTCNotes from './routes/challenges/notes/TwoTCNotes';
-import TwoTCRules from './routes/challenges/rules/TwoTCRules';
-import TwoMPRules from './routes/challenges/rules/TwoMPRules';
-import TwoTCC from './routes/challenges/TwoTCC';
-import TwoTCCNotes from './routes/challenges/notes/TwoTCCNotes';
-import TwoTCCExtraInfo from './routes/challenges/info/TwoTCCExtraInfo';
-import { AddTwoTCC, EditTwoTCC } from './routes/challenges/manip/ManipTwoTCC';
+import LoginRedirect from './routes/LoginRedirect';
+import { HelmetProvider } from 'react-helmet-async';
+import HomePage from './routes/HomePage';
+import TwoTC from './routes/challenges/TwoTC';
 import TwoTCCRules from './routes/challenges/rules/TwoTCCRules';
+import TwoTCNotes from './routes/challenges/notes/TwoTCNotes';
+import TwoTCExtraInfo from './routes/challenges/info/TwoTCExtraInfo';
+import { AddTwoTC, EditTwoTC } from './routes/challenges/manip/ManipTwoTC';
 import FTTC from './routes/challenges/FTTC';
-import FTTCExtraInfo from './routes/challenges/info/FTTCExtraInfo';
-import FTTCNotes from './routes/challenges/notes/FTTCNotes';
-import { AddFTTC, EditFTTC } from './routes/challenges/manip/ManipFTTC';
 import FTTCRules from './routes/challenges/rules/FTTCRules';
+import FTTCNotes from './routes/challenges/notes/FTTCNotes';
+import FTTCExtraInfo from './routes/challenges/info/FTTCExtraInfo';
+import { AddFTTC, EditFTTC } from './routes/challenges/manip/ManipFTTC';
+import LCC from './routes/challenges/LCC';
+import LCCRules from './routes/challenges/rules/LCCRules';
+import LCCNotes from './routes/challenges/notes/LCCNotes';
+import { AddLCC, EditLCC } from './routes/challenges/manip/ManipLCC';
 import LTC from './routes/challenges/LTC';
 import LTCRules from './routes/challenges/rules/LTCRules';
 import LTCNotes from './routes/challenges/notes/LTCNotes';
 import { AddLTC, EditLTC } from './routes/challenges/manip/ManipLTC';
-import LCC from './routes/challenges/LCC';
-import { AddLCC, EditLCC } from './routes/challenges/manip/ManipLCC';
-import LCCNotes from './routes/challenges/notes/LCCNotes';
-import LCCRules from './routes/challenges/rules/LCCRules';
 import LCD from './routes/challenges/LCD';
-import { AddLCD, EditLCD } from './routes/challenges/manip/ManipLCD';
-import LCDNotes from './routes/challenges/notes/LCDNotes';
 import LCDRules from './routes/challenges/rules/LCDRules';
-import ChimpsStarts from './routes/guides/ChimpsStarts';
+import LCDNotes from './routes/challenges/notes/LCDNotes';
+import { AddLCD, EditLCD } from './routes/challenges/manip/ManipLCD';
+import TwoMPC from './routes/challenges/TwoMPC';
+import TwoMPRules from './routes/challenges/rules/TwoMPRules';
+import TwoMPNotes from './routes/challenges/notes/TwoMPNotes';
+import TwoMPExtraInfo from './routes/challenges/info/TwoMPExtraInfo';
+import { AddTwoMP, EditTwoMP } from './routes/challenges/manip/ManipTwoMP';
+import TwoTCC from './routes/challenges/TwoTCC';
+import TwoTCRules from './routes/challenges/rules/TwoTCRules';
+import TwoTCCNotes from './routes/challenges/notes/TwoTCCNotes';
+import TwoTCCExtraInfo from './routes/challenges/info/TwoTCCExtraInfo';
+import { AddTwoTCC, EditTwoTCC } from './routes/challenges/manip/ManipTwoTCC';
 import Maps from './routes/reference/Maps';
 import { AddMap } from './routes/reference/manip/ManipMap';
-import AddChimpsStart from './routes/guides/manip/AddChimpsStart';
-import LoginRedirect from './routes/LoginRedirect';
-import { HelmetProvider } from 'react-helmet-async';
-import ExtractingGameAssets from './routes/guides/ExtractingGameAssets';
 import BalanceChanges from './routes/reference/BalanceChanges';
 import ManipBalanceChanges from './routes/reference/manip/ManipBalanceChanges';
+import ChimpsStarts from './routes/guides/ChimpsStarts';
+import AddChimpsStart from './routes/guides/manip/AddChimpsStart';
+import ExtractingGameAssets from './routes/guides/ExtractingGameAssets';
+import NotFound from './routes/NotFound';
+
 
 const router = createBrowserRouter([
   {

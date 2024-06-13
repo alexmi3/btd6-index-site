@@ -8,6 +8,7 @@ import PageTitle from "../../util/PageTitle";
 import { Helmet } from "react-helmet-async";
 import useTristateList from "../../util/useTristateList";
 import { useSearchParams } from "react-router-dom";
+import Modal from "../../util/modal";
 
 export default function ChallengePage({
     challenge,
@@ -24,7 +25,8 @@ export default function ChallengePage({
     fieldDisplayFunc = null,
     disableOG = false,
     fieldsInvisible = false,
-    alternateFormats = {}
+    alternateFormats = {},
+    rules,
 }) {
     const [searchParams, setSearchParams] = useSearchParams();
 
@@ -53,7 +55,8 @@ export default function ChallengePage({
     const { list: selectedCompletions, toggleElement: toggleSelectedCompletions, setList: setSelectedCompletions } = useToggleList();
 
     const deleteForm = useRef(null);
-
+    const modal = useRef(null);
+    
     const { isAuthenticated, isLoading, user } = useAuth0();
     const getToken = useAccessToken();
 
@@ -100,7 +103,15 @@ export default function ChallengePage({
             <meta name="description" content={description} />
         </Helmet>
         <p>{description}</p>
-        <p><a href={`/${challenge}/rules`}><strong>Rules (IMPORTANT)</strong></a></p>
+        <div style={{margin:'0.5rem'}}>
+            {isAuthenticated && (<button style={{margin:'0.5rem'}}><a href={`/add-${challenge}-form`}>Add {challenge}</a></button>)}
+            <button onClick={(() => modal.current.open())}>Rules</button>
+            <Modal ref={modal}>
+                {rules.map(rule => {
+                    return (<div key={rule.name}><h4 className="modal-body">{rule.name}</h4><p className="modal-body">{rule.rule}</p></div>)
+                })}
+            </Modal>
+        </div>
         {isAdmin && <p><a href={`/add-${challenge}-form`}>Add {challenge}</a></p>}
         {
             Object.keys(alternateFormats).length > 0 && <>
