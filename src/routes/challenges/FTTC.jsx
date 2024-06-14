@@ -28,5 +28,18 @@ export default function FTTC() {
         altFieldHeaders={[]}
         altFields={[]}
         fieldDisplayFunc={fieldDisplayFunc}
+        rules = {[
+            {
+                name: 'Tower Limitations',
+                rule: 'No Heroes Allowed!'
+            },
+            {
+                name: 'Challenge Settings',
+                rule: "The Challenge Editor should be set to the hard difficulty and CHIMPS mode. \nStarting Cash, Starting Lives, Max Lives, Start Round, and End Round must be set to their default values. \nThe end round must strictly be set to Round 100. \nThe \"Least Cash\" condition should be set to \"No Score Set\" (or 99999999 through clicking the auto button twice which does the same thing without needing a reset); this is mainly to prevent exploiting of cash bugs. \nYou can reset the score after completing a run by clicking the auto button twice. \nAll sliders must be set to 100%. \nAll check boxes at the bottom must remain unchecked.",
+            },
+            {
+                
+            }
+        ]}
     />
 };

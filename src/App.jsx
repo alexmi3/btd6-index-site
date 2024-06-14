@@ -32,7 +32,6 @@ import TwoMPNotes from './routes/challenges/notes/TwoMPNotes';
 import TwoMPExtraInfo from './routes/challenges/info/TwoMPExtraInfo';
 import { AddTwoMP, EditTwoMP } from './routes/challenges/manip/ManipTwoMP';
 import TwoTCC from './routes/challenges/TwoTCC';
-import TwoTCRules from './routes/challenges/rules/TwoTCRules';
 import TwoTCCNotes from './routes/challenges/notes/TwoTCCNotes';
 import TwoTCCExtraInfo from './routes/challenges/info/TwoTCCExtraInfo';
 import { AddTwoTCC, EditTwoTCC } from './routes/challenges/manip/ManipTwoTCC';
@@ -186,10 +185,6 @@ const router = createBrowserRouter([
       {
         path: "2mp/rules",
         element: <TwoMPRules />
-      },
-      {
-        path: "2tc/rules",
-        element: <TwoTCRules />
       },
       {
         path: "fttc/rules",

@@ -34,7 +34,9 @@ export function Modal({ children, fade = false, defaultOpened = false }, ref) {
                             <h1 className="modal-title">Rules</h1>
                             <button className="btn-close" onClick={close}>❌</button>
                         </div>
-                        {children}
+                        <div className='modal-body'>
+                            {children}
+                        </div>
                         <div className="modal-footer">
                             <button className="btn-close" onClick={close}>Close</button>
                         </div>

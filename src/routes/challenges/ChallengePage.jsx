@@ -10,6 +10,11 @@ import useTristateList from "../../util/useTristateList";
 import { useSearchParams } from "react-router-dom";
 import Modal from "../../util/modal";
 
+export const defaultRules = {
+    adora: <div><h2>hi</h2><p>hello</p></div>,
+    test: <div><h2>hi</h2></div>
+}
+
 export default function ChallengePage({
     challenge,
     header,
@@ -106,13 +111,8 @@ export default function ChallengePage({
         <div style={{margin:'0.5rem'}}>
             {isAuthenticated && (<button style={{margin:'0.5rem'}}><a href={`/add-${challenge}-form`}>Add {challenge}</a></button>)}
             <button onClick={(() => modal.current.open())}>Rules</button>
-            <Modal ref={modal}>
-                {rules.map(rule => {
-                    return (<div key={rule.name}><h4 className="modal-body">{rule.name}</h4><p className="modal-body">{rule.rule}</p></div>)
-                })}
-            </Modal>
+            <Modal ref={modal}>{rules}</Modal>
         </div>
-        {isAdmin && <p><a href={`/add-${challenge}-form`}>Add {challenge}</a></p>}
         {
             Object.keys(alternateFormats).length > 0 && <>
                 <input type="radio" id="alternate-format-List" name="format" value="List"
