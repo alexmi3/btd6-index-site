@@ -1,5 +1,6 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import ChallengePage from "./ChallengePage"
+import { defaultRules, addRule, deleteRule } from "../../util/rules";
 
 export default function FTTC() {
     const fieldDisplayFunc = useCallback(({fieldName, fieldValue}) => {
@@ -19,6 +20,36 @@ export default function FTTC() {
         }
         return fieldValue;
     }, []);
+
+    const effectRan = useRef(false);
+    const [allRules, setAllRules] = useState(defaultRules);
+        
+    useEffect(() => {
+        if(effectRan.current === true){
+            setAllRules(a => [...addRule(a, {
+                id: 1, 
+                name: 'Tower Limitations', 
+                rule: <div>
+                    <h2>Tower Limitations</h2>
+                    <p>Heroes are <strong>not</strong> allowed!</p>
+                    <p>All other towers are fair game.</p>
+                </div>,
+            })]);
+
+            setAllRules(a => [...addRule(a, {
+                id: 1, 
+                name: 'Tower Restrictions', 
+                rule: <div>
+                        <h2>Tower and Hero Restrictions</h2>
+                        <p>Exclude all unused tower types (including all heroes) from your selection.</p>
+                    </div>,
+            })]);
+
+            setAllRules(a => [...deleteRule(a, 'Adora')]);
+        }
+        return () => {effectRan.current = true}
+    }, [])
+
     return <ChallengePage
         challenge="fttc"
         header="Fewest Types of Towers CHIMPS"
@@ -28,18 +59,6 @@ export default function FTTC() {
         altFieldHeaders={[]}
         altFields={[]}
         fieldDisplayFunc={fieldDisplayFunc}
-        rules = {[
-            {
-                name: 'Tower Limitations',
-                rule: 'No Heroes Allowed!'
-            },
-            {
-                name: 'Challenge Settings',
-                rule: "The Challenge Editor should be set to the hard difficulty and CHIMPS mode. \nStarting Cash, Starting Lives, Max Lives, Start Round, and End Round must be set to their default values. \nThe end round must strictly be set to Round 100. \nThe \"Least Cash\" condition should be set to \"No Score Set\" (or 99999999 through clicking the auto button twice which does the same thing without needing a reset); this is mainly to prevent exploiting of cash bugs. \nYou can reset the score after completing a run by clicking the auto button twice. \nAll sliders must be set to 100%. \nAll check boxes at the bottom must remain unchecked.",
-            },
-            {
-                
-            }
-        ]}
+        rules={allRules}
     />
 };

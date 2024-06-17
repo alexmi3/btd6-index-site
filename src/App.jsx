@@ -5,29 +5,23 @@ import LoginRedirect from './routes/LoginRedirect';
 import { HelmetProvider } from 'react-helmet-async';
 import HomePage from './routes/HomePage';
 import TwoTC from './routes/challenges/TwoTC';
-import TwoTCCRules from './routes/challenges/rules/TwoTCCRules';
 import TwoTCNotes from './routes/challenges/notes/TwoTCNotes';
 import TwoTCExtraInfo from './routes/challenges/info/TwoTCExtraInfo';
 import { AddTwoTC, EditTwoTC } from './routes/challenges/manip/ManipTwoTC';
 import FTTC from './routes/challenges/FTTC';
-import FTTCRules from './routes/challenges/rules/FTTCRules';
 import FTTCNotes from './routes/challenges/notes/FTTCNotes';
 import FTTCExtraInfo from './routes/challenges/info/FTTCExtraInfo';
 import { AddFTTC, EditFTTC } from './routes/challenges/manip/ManipFTTC';
 import LCC from './routes/challenges/LCC';
-import LCCRules from './routes/challenges/rules/LCCRules';
 import LCCNotes from './routes/challenges/notes/LCCNotes';
 import { AddLCC, EditLCC } from './routes/challenges/manip/ManipLCC';
 import LTC from './routes/challenges/LTC';
-import LTCRules from './routes/challenges/rules/LTCRules';
 import LTCNotes from './routes/challenges/notes/LTCNotes';
 import { AddLTC, EditLTC } from './routes/challenges/manip/ManipLTC';
 import LCD from './routes/challenges/LCD';
-import LCDRules from './routes/challenges/rules/LCDRules';
 import LCDNotes from './routes/challenges/notes/LCDNotes';
 import { AddLCD, EditLCD } from './routes/challenges/manip/ManipLCD';
 import TwoMPC from './routes/challenges/TwoMPC';
-import TwoMPRules from './routes/challenges/rules/TwoMPRules';
 import TwoMPNotes from './routes/challenges/notes/TwoMPNotes';
 import TwoMPExtraInfo from './routes/challenges/info/TwoMPExtraInfo';
 import { AddTwoMP, EditTwoMP } from './routes/challenges/manip/ManipTwoMP';
@@ -181,30 +175,6 @@ const router = createBrowserRouter([
       {
         path: "lcd/notes",
         element: <LCDNotes />
-      },
-      {
-        path: "2mp/rules",
-        element: <TwoMPRules />
-      },
-      {
-        path: "fttc/rules",
-        element: <FTTCRules />
-      },
-      {
-        path: "2tcc/rules",
-        element: <TwoTCCRules />
-      },
-      {
-        path: "ltc/rules",
-        element: <LTCRules />
-      },
-      {
-        path: "lcc/rules",
-        element: <LCCRules />
-      },
-      {
-        path: "lcd/rules",
-        element: <LCDRules />
       },
       {
         path: "maps",

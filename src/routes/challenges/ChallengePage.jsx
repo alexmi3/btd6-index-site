@@ -10,11 +10,6 @@ import useTristateList from "../../util/useTristateList";
 import { useSearchParams } from "react-router-dom";
 import Modal from "../../util/modal";
 
-export const defaultRules = {
-    adora: <div><h2>hi</h2><p>hello</p></div>,
-    test: <div><h2>hi</h2></div>
-}
-
 export default function ChallengePage({
     challenge,
     header,
@@ -111,7 +106,11 @@ export default function ChallengePage({
         <div style={{margin:'0.5rem'}}>
             {isAuthenticated && (<button style={{margin:'0.5rem'}}><a href={`/add-${challenge}-form`}>Add {challenge}</a></button>)}
             <button onClick={(() => modal.current.open())}>Rules</button>
-            <Modal ref={modal}>{rules}</Modal>
+            <Modal ref={modal}>{
+                rules.map(rule => {
+                    return <div key={rule.id}>{rule.rule}</div>
+                })
+            }</Modal>
         </div>
         {
             Object.keys(alternateFormats).length > 0 && <>

@@ -1,16 +1,33 @@
-import { defaultRules } from "./ChallengePage";
-import ChallengePage from "./ChallengePage"
+import ChallengePage from "./ChallengePage";
+import { defaultRules, addRule } from "../../util/rules";
+import { useEffect, useState, useRef } from "react";
 
 export default function TwoTC() {
+    const effectRan = useRef(false);
+    const [allRules, setAllRules] = useState(defaultRules);
+    
+    useEffect(() => {
+        if(effectRan.current === true){
+            setAllRules(a => [...addRule(a, {
+                id: 1, 
+                name: 'Tower Limitations', 
+                rule: <div>
+                        <h2>Tower Limitations</h2>
+                        <p>Towers that have successfully soloed CHIMPS mode in the past or currently are <strong>not</strong> allowed. As of now, this includes <strong>Sauda</strong>, <strong>Geraldo</strong>, and <strong>Corvus</strong>.</p>
+                    </div>,
+            })]);
 
-    let allRules = Object.entries(defaultRules);
-
-    allRules.forEach((rule, i) => {
-        if(rule[0] === 'test'){
-            rule[1] = <div><h2>hi</h2><p>this rule is a test</p></div>
+            setAllRules(a => [...addRule(a, {
+                id: 1, 
+                name: 'Tower Restrictions', 
+                rule: <div>
+                    <h2>Tower and Hero Restrictions</h2>
+                    <p>Exclude all unused towers from your selection. The towers' path and crosspath need to be restricted. When using heroes, you must not select the "selected hero" option.</p>
+                </div>,
+            })]);
         }
-        allRules[i] = rule[1];
-    });
+        return () => {effectRan.current = true}
+    }, [])
 
     return (
         <ChallengePage
@@ -30,7 +47,7 @@ export default function TwoTC() {
                 }
                 return fieldValue || "N/A";
             }}
-            rules={ allRules }
+            rules={allRules}
         />
     );
 };
