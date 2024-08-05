@@ -1,51 +1,34 @@
-import React, { useState, useImperativeHandle, forwardRef, useCallback, useEffect } from "react";
-import { createPortal } from "react-dom";
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import "../modal.css";
 
-const ModalElement = document.getElementById('modal-root');
+export default function RulesModal({ rules }) {
+	const [open, setOpen] = useState(false);
+	const handleOpen = () => setOpen(true);
+	const handleClose = () => setOpen(false);
 
-export function Modal({ children, fade = false, defaultOpened = false }, ref) {
-    const [isOpen, setIsOpen] = useState(defaultOpened);
-    const close = useCallback(() => setIsOpen(false), []);
-
-    useImperativeHandle(ref, () => ({
-            open: (() => setIsOpen(true)),
-            close,
-        }), [close] );
-
-    const handleEscape = useCallback((event) => {
-            if (event.keyCode === 27) close()
-        }, [close] );
-
-    useEffect(() => {
-        if (isOpen) document.addEventListener("keydown", handleEscape, false);
-        return () => {
-            document.removeEventListener("keydown", handleEscape, false);
-        };
-    }, [handleEscape, isOpen]);
-
-    return createPortal(
-        isOpen ? (
-            <div role="dialog" className={`modal ${fade ? "modal-fade" : ""}`}>
-                <div className="modal-overlay" onClick={close} />
-                <div className="modal-dialog-scrollable">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h1 className="modal-title">Rules</h1>
-                            <button className="btn-close" onClick={close}>❌</button>
-                        </div>
-                        <div className='modal-body'>
-                            {children}
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn-close" onClick={close}>Close</button>
-                        </div>
+	return (
+        <span>
+            <Button disableRipple={true} className='modal-open-btn' color='white' variant="contained" onClick={handleOpen}>Rules</Button>
+            <Modal open={open} onClose={handleClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description' className='modal' >
+                <Box className='modal-box'>
+                    <div className='modal-header'>
+                        <h1 className='modal-title'>Rules</h1>
+                        <Button color='third' variant='contained' className='btn-close' onClick={handleClose} startIcon={<CloseIcon />} > Close </Button>
                     </div>
-                </div>
-            </div>
-        ) : null,
-        ModalElement
-    );
+                    <hr className='modal-break'/>
+                    <div className='modal-body'>
+                        {rules.map((rule) => {return rule.rule})}
+                    </div>
+                    <hr className='modal-break'/>
+                    <div className='modal-footer'>
+                        <Button color='third' variant='contained' className='btn-close' onClick={handleClose} startIcon={<CloseIcon />} > Close </Button>
+                    </div>
+                </Box>
+            </Modal>
+        </span>
+	);
 }
-
-export default forwardRef(Modal);

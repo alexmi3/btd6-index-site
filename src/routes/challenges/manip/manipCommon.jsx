@@ -1,9 +1,10 @@
 import { useCallback, useState, useEffect, Fragment } from "react";
-import { imageObjectRegex } from "../../../util/imageObjectRegex";
+import { imageObjectRegex } from "../../../../functions/imageObjectRegex.js";
+//import { imageObjectRegex } from "../../../util/imageObjectRegex";
 import useAccessToken from "../../../util/useAccessToken";
 import useForceReload from "../../../util/useForceReload";
 
-function useSubmitCallback({formRef, challenge, oldLink, setEditParams, forceReload: forceReloadVar}) {
+function useSubmitCallback({formRef, challenge, oldLink, setEditParams, forceReload: forceReloadVar, setSubmissionInProgress}) {
     const getToken = useAccessToken();
 
     return useCallback((e) => {
@@ -13,6 +14,7 @@ function useSubmitCallback({formRef, challenge, oldLink, setEditParams, forceRel
             alert('You cannot reference a media.btd6index.win image from a different completion');
             return;
         }
+        setSubmissionInProgress(true);
         getToken({
             authorizationParams: {
                 audience: 'https://btd6index.win/',
@@ -44,8 +46,10 @@ function useSubmitCallback({formRef, challenge, oldLink, setEditParams, forceRel
             }
         }).catch(error => {
             window.alert(`Error adding ${challenge}: ${error.message}`);
+        }).finally(() => {
+            setSubmissionInProgress(false);
         });
-    }, [getToken, challenge, formRef, oldLink, setEditParams, forceReloadVar]);
+    }, [formRef, oldLink, setSubmissionInProgress, getToken, challenge, setEditParams, forceReloadVar]);
 }
 
 const DEFAULT_ALT_FIELDS = ['map'];
@@ -67,7 +71,6 @@ function useFetchExistingInfo({editParams, fields, altFields = DEFAULT_ALT_FIELD
             .then(async (res) => {
                 let json = await res.json();
                 if ('error' in json) {
-                    console.log(json.error);
                     setExistingInfo(null);
                 } else {
                     setExistingInfo(json.results);
@@ -77,7 +80,6 @@ function useFetchExistingInfo({editParams, fields, altFields = DEFAULT_ALT_FIELD
                         ));
                         let ogJson = await ogRes.json();
                         if ('error' in ogJson) {
-                            console.log(ogJson.error);
                             setOGInfo(null);
                         } else {
                             setOGInfo(ogJson.result);
@@ -88,7 +90,6 @@ function useFetchExistingInfo({editParams, fields, altFields = DEFAULT_ALT_FIELD
                     ));
                     let notesJson = await notesRes.json();
                     if ('error' in notesJson) {
-                        console.log(notesJson.error);
                         setNoteInfo(null);
                     } else {
                         setNoteInfo(notesJson);

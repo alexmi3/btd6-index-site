@@ -2,24 +2,25 @@ import Select from "react-select";
 import selectStyle from "../../../util/selectStyle";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { towerTypeToOptions } from "../../../util/selectOptions";
+import { towerTypeAndHeroToOptions } from "../../../util/selectOptions";
 import { withAuthenticationRequired } from "@auth0/auth0-react";
 import useCheckIfAdmin from "../../../util/useCheckIfAdmin";
 import { AttachmentsWidget, FormLinkImageEntry, useFetchExistingInfo, useSubmitCallback } from "./manipCommon";
-import MapSelect from "../../../util/MapSelect";
+import OdysseySelect from "../../../util/OdysseySelect";
 import PageTitle from "../../../util/PageTitle";
 
-const FIELDS = ['map']; // needs to be outside so react doesn't treat value as changed every re-render
+const FIELDS = ['odyssey']; // needs to be outside so react doesn't treat value as changed every re-render
 const ALT_FIELDS = ['towerset'];
 
-function ManipFTTC({ editParams = null, setEditParams = null }) {
+function ManipLTO({ editParams = null, setEditParams = null }) {
     const [isOG, setOG] = useState(false);
+    const [options, setOptions] = useState([...towerTypeAndHeroToOptions.values()]);
 
     const {existingInfo, ogInfo, noteInfo, existingAttachments, forceReload} = useFetchExistingInfo({
         editParams,
         fields: FIELDS,
         altFields: ALT_FIELDS,
-        challenge: 'fttc'
+        challenge: 'lto'
     });
 
     useEffect(() => {
@@ -32,45 +33,49 @@ function ManipFTTC({ editParams = null, setEditParams = null }) {
 
     const doEdit = editParams !== null;
 
-    const [submissionInProgress, setSubmissionInProgress] = useState(false);
-
     const submitCallback = useSubmitCallback({
-        formRef: theForm, challenge: 'fttc', oldLink: existingInfo?.[0]?.link, setEditParams, forceReload, setSubmissionInProgress
+        formRef: theForm, challenge: 'lto', oldLink: existingInfo?.[0]?.link, setEditParams, forceReload
     });
 
     const towersetList = editParams?.get('towerset') ? JSON.parse(editParams?.get('towerset')) : []
 
     const [towersetValue, setTowersetValue] = useState(JSON.stringify(towersetList));
 
-    const [map, setMap] = useState(null);
+    const [odyssey, setOdyssey] = useState(null);
     useEffect(() => {
-        setMap(existingInfo?.[0]?.map)
+        setOdyssey(existingInfo?.[0]?.odysseyName)
     }, [existingInfo]);
 
     return <>
-        <p><a href="/fttc">Back to FTTCs</a></p>
-        <PageTitle>{doEdit ? `Edit (${towersetList.join(', ')}) FTTC on ${editParams.get('map')}` : "Add an FTTC Completion"}</PageTitle>
-        <form method="post" encType="multipart/form-data" action="/member/add-fttc-submit" onSubmit={submitCallback} ref={theForm}>
+        <p><a href="/lto">Back to LTOs</a></p>
+        <PageTitle>{doEdit ? `Edit (${towersetList.join(', ')}) LTO for ${editParams.get('odysseyName')}` : "Add an LTO Completion"}</PageTitle>
+        <form method="post" encType="multipart/form-data" action="/member/add-lto-submit" onSubmit={submitCallback} ref={theForm}>
             {(!doEdit || existingInfo?.[0]?.pending) && isAdmin ? <><span className="formLine">
                 <label htmlFor="verify">Mark as verified?</label>
                 <input type="checkbox" name="verify" />
             </span><br /></> : <input type="hidden" name="verify" value="on" />}
             <span className="formLine">
-                <label htmlFor="map">Map</label>
-                <MapSelect name="map" inputId="map" mapValue={map} required onChange={(val) => setMap(val.value)} />
+                <label htmlFor="odyssey">Odyssey</label>
+                <OdysseySelect name="odyssey" inputId="odyssey" odysseyValue={odyssey} required onChange={(val) => setOdyssey(val.value)} />
             </span>
             <br />
             <span className="formLine">
-                <label htmlFor="towerset">Tower Types</label>
+                <label htmlFor="towerset">Towers</label>
                 <Select
                     isMulti
-                    options={[...towerTypeToOptions.values()]}
+                    options={options}
                     styles={selectStyle}
-                    defaultValue={towersetList.map(towerType => towerTypeToOptions.get(towerType))}
-                    onChange={useCallback((newValue) => {
-                        setTowersetValue(JSON.stringify(newValue.map(val => val.value)));
-                    }, [])}
+                    defaultValue={towersetList.map(towerType => towerTypeAndHeroToOptions.get(towerType))}
                     required 
+                    onChange={useCallback((newValue, option) => {
+                        if (option.action === "select-option") {
+                            setOptions(o => [ ...o, {value: option.option.value + "_" + Date.now(), label: option.option.label}])
+                        }
+                        if (option.action === "clear"){
+                            setOptions([...towerTypeAndHeroToOptions.values()]);
+                        }
+                        setTowersetValue(JSON.stringify(newValue.map(val => val.label)));
+                    }, [])}
                 />
                 <input type="hidden" name="towerset" value={towersetValue} />
             </span>
@@ -108,24 +113,24 @@ function ManipFTTC({ editParams = null, setEditParams = null }) {
                     <br />
                 </>
             }
-            {editParams && ['map', 'towerset'].map(
+            {editParams && ['odyssey', 'towerset'].map(
                 field => <input type="hidden" name={`edited-${field}`} key={field} value={editParams.get(field) ?? undefined} />)}
             <input type="hidden" name="edit" value={doEdit} />
-            <input type="submit" name="submit" value={doEdit ? "Update FTTC" : "Add FTTC"} disabled={submissionInProgress} />
+            <input type="submit" name="submit" value={doEdit ? "Update LTO" : "Add LTO"} />
         </form>
     </>
 };
 
-const AddFTTC = withAuthenticationRequired(() => {
-    return <ManipFTTC />;
+const AddLTO = withAuthenticationRequired(() => {
+    return <ManipLTO />;
 });
 
-const EditFTTC = withAuthenticationRequired(() => {
+const EditLTO = withAuthenticationRequired(() => {
     const [params, setParams] = useSearchParams();
-    if (!params.has('towerset') || !params.has('map')) {
-        return <PageTitle>Need to specify map and towerset</PageTitle>;
+    if (!params.has('towerset') || !params.has('odysseyName')) {
+        return <PageTitle>Need to specify Odyssey Name and Towerset</PageTitle>;
     }
-    return <ManipFTTC editParams={params} setEditParams={setParams} />
+    return <ManipLTO editParams={params} setEditParams={setParams} />
 });
 
-export { AddFTTC, EditFTTC };
+export { AddLTO , EditLTO};
