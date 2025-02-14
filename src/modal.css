@@ -13,8 +13,10 @@
     transform: translate(-50%, -50%);
     width: 400;
     box-shadow: 24;
-    background-color: #ddd;
-    color: black;
+    background-color: black;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0 100%), url("rulesBackground.webp");
+    background-size: cover;
+    color: #ddd;
     height: calc(100% - 4rem * 2);
     border: 2px solid #c36b6b;
     border-radius: 20px;
@@ -25,7 +27,6 @@
 
 .modal-break {
 	border: none;
-	border-top: 3px double #333;
 	color: black;
 	overflow: visible;
 	text-align: center;
@@ -33,7 +34,7 @@
 }
 
 .modal-break::after {
-	background: #ddd;
+    color: #ddd;
 	content: "⚶ ⚶ ⚶";
 	padding: 0 4px;
 	position: relative;

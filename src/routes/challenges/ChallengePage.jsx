@@ -131,7 +131,7 @@ export default function ChallengePage({
         <p>{description}</p>
         <div style={{margin:'0.5rem'}}>
             {isAuthenticated && (<Button className='add-challenge' color='white' variant='contained' href={`/add-${challenge}-form`}>Add {challenge}</Button>)}
-            <RulesModal rules={rules}></RulesModal>
+            <RulesModal challenge={challenge} rules={rules}></RulesModal>
         </div>
         {
             Object.keys(alternateFormats).length > 0 && <>
